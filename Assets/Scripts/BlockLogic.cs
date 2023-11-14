@@ -1,27 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BlockLogic : MonoBehaviour
 {
     public float previousTime;
     public float fallTime = 0.8f;
+    public bool isGameOver = false;
 
     public static int width = 10;
     public static int height = 20;
     public static Transform[,] grid = new Transform[width, height];
 
+
     public SpawnManager spawnManager;
+    public GameManager gameManager;
+    public MenuFunctions menuFunctions;
     // Start is called before the first frame update
     void Start()
     {
+        menuFunctions = FindObjectOfType<MenuFunctions>();
         spawnManager = FindObjectOfType<SpawnManager>();
+        gameManager = FindObjectOfType<GameManager>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-      
+
+        
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             transform.position += new Vector3(-1, 0, 0);
@@ -56,10 +66,14 @@ public class BlockLogic : MonoBehaviour
                 AddToGrid();
                 CheckLines();
                 this.enabled   = false;
-                spawnManager.SpawnBlock(); 
+                if (!isGameOver)
+                {
+                    spawnManager.SpawnBlock();
+                }
             }
             previousTime = Time.time;
         }
+
     }
 
     void CheckLines()
@@ -70,6 +84,7 @@ public class BlockLogic : MonoBehaviour
             {
                 DeleteLine(y);
                 RowLine(y);
+                gameManager.AddScore(20);
             }
         }
     }
@@ -120,6 +135,12 @@ public class BlockLogic : MonoBehaviour
 
             grid[roundX, roundY] = children;
 
+            if (roundY > 10)
+            {
+                isGameOver = true;
+                GameOver();
+                return;
+            }
         }
     }
     bool isValid()
@@ -143,4 +164,13 @@ public class BlockLogic : MonoBehaviour
         return true;
     }
 
+    public void GameOver()
+    {
+       
+        spawnManager.gameOverText.text = "Game Over... Its Finished " + gameManager.GetScore().ToString();
+        spawnManager.gameOverUI.gameObject.SetActive(true);
+        
+    }
+
+    
 }

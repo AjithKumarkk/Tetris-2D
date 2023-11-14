@@ -10,20 +10,6 @@ public class MenuFunctions : MonoBehaviour
 {
     [SerializeField] private AudioMixer myAudio;
 
-    private bool isPause;
-
-    [SerializeField] private AudioManager myAudioManager;
-
-    private void Start()
-    {
-        myAudioManager = FindObjectOfType<AudioManager>();
-
-        if (myAudioManager == null ) 
-        {
-            Debug.LogError("not found...");
-        }
-    }
-
     public void StartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1 );
@@ -60,19 +46,8 @@ public class MenuFunctions : MonoBehaviour
         SceneManager.LoadScene("OptionScene");
     }
 
-
-    public void OnToggle()
+    public void ShowHowToPlay()
     {
-        isPause = !isPause;
-        if (isPause)
-        {
-            myAudioManager.GetComponent<AudioSource>().Pause();
-        }
-        else
-        {
-            myAudioManager.GetComponent<AudioSource>().UnPause();
-        }
-
-        
+        SceneManager.LoadScene("HowTo");
     }
 }

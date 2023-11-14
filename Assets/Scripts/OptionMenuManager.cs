@@ -5,53 +5,37 @@ using UnityEngine.SceneManagement;
 
 public class OptionMenuManager : MonoBehaviour
 {
-   public static OptionMenuManager instance;
+    private bool isPause;
 
-    public GameObject optionMenuObject;
+    [SerializeField] private AudioManager myAudioManager;
 
-    private void Awake()
+    private void Start()
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
+        myAudioManager = FindObjectOfType<AudioManager>();
 
-            SceneManager.sceneLoaded += OnSceneLoaded;
+        if (myAudioManager == null)
+        {
+            Debug.LogError("not found...");
+        }
+
+    }
+
+    public void OnToggle()
+    {
+        isPause = !isPause;
+        if (isPause)
+        {
+            myAudioManager.GetComponent<AudioSource>().Pause();
         }
         else
         {
-            Destroy(gameObject);
+            myAudioManager.GetComponent<AudioSource>().UnPause();
         }
     }
 
-    private void OnDestroy()
+    public void BackGame()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    private void OnSceneLoaded(Scene scene,LoadSceneMode mode)
-    {
-        if (scene.name != gameObject.scene.name)
-        {
-            ActivateOptionMenu();
-        }
-    }
-
-    private void ActivateOptionMenu()
-    {
-        if (optionMenuObject != null)
-        {
-            optionMenuObject.SetActive(true);
-        }
-        else
-        {
-            Debug.LogError("Its Error...");
-        }
-    }
-
-    public void ShowOptionMenu()
-    {
-        ActivateOptionMenu();
+        SceneManager.LoadScene("Menu");
     }
 
 }

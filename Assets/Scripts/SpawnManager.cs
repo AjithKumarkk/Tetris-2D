@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,14 +12,15 @@ public class SpawnManager : MonoBehaviour
 
     public static bool isPaused = false;
 
+    public TextMeshProUGUI gameOverText;
+    public GameObject gameOverUI;
+
     private AudioManager audioManager;
-   
 
     void Start()
     {
         audioManager = AudioManager.instance;
         SpawnBlock();
-
        
     }
 
@@ -75,5 +77,4 @@ public class SpawnManager : MonoBehaviour
     {
         SceneManager.LoadScene("OptionScene");
     }
-
 }
