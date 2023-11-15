@@ -67,14 +67,10 @@ public class SpawnManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void QuitGame()
+    public void MainMenuButton()
     {
-        Application.Quit();
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Menu");
     }
     
-
-   public void OnButtonClick()
-    {
-        SceneManager.LoadScene("OptionScene");
-    }
 }

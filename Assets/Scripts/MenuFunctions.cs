@@ -26,21 +26,6 @@ public class MenuFunctions : MonoBehaviour
         Application.Quit();
     }
 
-    public void SetVolume(float volume)
-    {
-        float calculatedvolume = volumecalculation(volume);
-        myAudio.SetFloat("Volume", calculatedvolume);
-        Debug.Log(volume);
-    }
-
-    float volumecalculation(float volume)
-    {
-        if (volume < -50)
-            return 0;
-        else
-            return volume;
-    }
-
     public void ShowOptions()
     {
         SceneManager.LoadScene("OptionScene");

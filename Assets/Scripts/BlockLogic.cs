@@ -135,7 +135,7 @@ public class BlockLogic : MonoBehaviour
 
             grid[roundX, roundY] = children;
 
-            if (roundY > 10)
+            if (roundY >= 18)
             {
                 isGameOver = true;
                 GameOver();
@@ -167,7 +167,7 @@ public class BlockLogic : MonoBehaviour
     public void GameOver()
     {
        
-        spawnManager.gameOverText.text = "Game Over... Its Finished " + gameManager.GetScore().ToString();
+        spawnManager.gameOverText.text = "Game Over... Your Score is " + gameManager.GetScore().ToString();
         spawnManager.gameOverUI.gameObject.SetActive(true);
         
     }
