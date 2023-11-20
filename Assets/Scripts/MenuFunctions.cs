@@ -35,4 +35,10 @@ public class MenuFunctions : MonoBehaviour
     {
         SceneManager.LoadScene("HowTo");
     }
+
+    public void HighScore()
+    {
+        SceneManager.LoadScene("HighScore");
+    }
+
 }

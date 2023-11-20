@@ -31,7 +31,7 @@ public class BlockLogic : MonoBehaviour
     void Update()
     {
 
-        
+
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             transform.position += new Vector3(-1, 0, 0);
@@ -48,7 +48,7 @@ public class BlockLogic : MonoBehaviour
                 transform.position -= new Vector3(1, 0, 0);
             }
         }
-        else if (Input.GetKeyDown (KeyCode.UpArrow))
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             transform.Rotate(0, 0, 90);
             if (!isValid())
@@ -56,7 +56,7 @@ public class BlockLogic : MonoBehaviour
                 transform.Rotate(0, 0, -90);
             }
         }
-        
+
         if (Time.time - previousTime > (Input.GetKeyDown(KeyCode.DownArrow) ? fallTime / 10 : fallTime))
         {
             transform.position += new Vector3(0, -1, 0);
@@ -65,7 +65,7 @@ public class BlockLogic : MonoBehaviour
                 transform.position -= new Vector3(0, -1, 0);
                 AddToGrid();
                 CheckLines();
-                this.enabled   = false;
+                this.enabled = false;
                 if (!isGameOver)
                 {
                     spawnManager.SpawnBlock();
@@ -78,7 +78,7 @@ public class BlockLogic : MonoBehaviour
 
     void CheckLines()
     {
-        for (int y = height-1; y >= 0;y--)
+        for (int y = height - 1; y >= 0; y--)
         {
             if (HasLine(y))
             {
@@ -91,9 +91,9 @@ public class BlockLogic : MonoBehaviour
 
     bool HasLine(int y)
     {
-        for( int j = 0; j<width;j++)
+        for (int j = 0; j < width; j++)
         {
-            if (grid[j,y] == null)
+            if (grid[j, y] == null)
             {
                 return false;
             }
@@ -103,24 +103,24 @@ public class BlockLogic : MonoBehaviour
 
     void DeleteLine(int y)
     {
-        for (int j=0; j<width;j++)
+        for (int j = 0; j < width; j++)
         {
-            Destroy(grid[j,y].gameObject);
-            grid[j,y] = null;
+            Destroy(grid[j, y].gameObject);
+            grid[j, y] = null;
         }
     }
 
     void RowLine(int y)
     {
-        for (int i = y; i < height;i++)
+        for (int i = y; i < height; i++)
         {
-            for (int j = 0;j<width;j++)
+            for (int j = 0; j < width; j++)
             {
-                if (grid[j,i] != null)
+                if (grid[j, i] != null)
                 {
-                    grid[j,i-1] = grid[j,i];
-                    grid[j,i] = null;
-                    grid[j,i-1].transform.position -= new Vector3(0,1,0);
+                    grid[j, i - 1] = grid[j, i];
+                    grid[j, i] = null;
+                    grid[j, i - 1].transform.position -= new Vector3(0, 1, 0);
                 }
             }
         }
@@ -155,7 +155,7 @@ public class BlockLogic : MonoBehaviour
                 return false;
             }
 
-            if (grid[roundX,roundY] != null)
+            if (grid[roundX, roundY] != null)
             {
                 return false;
             }
@@ -166,11 +166,29 @@ public class BlockLogic : MonoBehaviour
 
     public void GameOver()
     {
-       
+        int currentScore = gameManager.GetScore();
+        SaveScore(currentScore);
+
         spawnManager.gameOverText.text = "Game Over... Your Score is " + gameManager.GetScore().ToString();
         spawnManager.gameOverUI.gameObject.SetActive(true);
-        
-    }
 
-    
+
+    }
+    void SaveScore(int score)
+    {
+        // Save the score to PlayerPrefs
+        for (int i = 1; i <= 10; i++)
+        {
+            int highScore = PlayerPrefs.GetInt("HighScore" + i, 0);
+
+            if (score > highScore)
+            {
+                PlayerPrefs.SetInt("HighScore" + i, score);
+                score = highScore; // Move the previous high score down
+            }
+        }
+
+        // Save the changes
+        PlayerPrefs.Save();
+    }
 }
